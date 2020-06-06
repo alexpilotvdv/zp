@@ -50,6 +50,7 @@
 
 		case 'exit':
 			$_SESSION['user'] = false;
+			header('Location: ' . BEZ_HOST );
 		break;
 
 	}
