@@ -53,6 +53,16 @@
 			header('Location: ' . BEZ_HOST );
 		break;
 
+		case 'profile':
+		if($user == true){
+			echo "edit profile---";
+			include './scripts/main/editprofile.php';
+		}
+		else {
+			echo "пшел нах";
+		}
+		break;
+
 	}
 
 	//Получаем данные с буфера
