@@ -55,7 +55,6 @@
 
 		case 'profile':
 		if($user == true){
-			echo "edit profile---";
 			include './scripts/main/editprofile.php';
 		}
 		else {
@@ -63,6 +62,17 @@
 		}
 		break;
 
+	}
+	//в перспективе можно если установлен, то присвоить переменной $mode
+if(isset($_POST['mode'])){
+	if($_POST['mode']=="addzapis"){
+		if($user == true){
+			include './scripts/main/editprofile.php';
+		}
+		else {
+			echo "пшел нах";
+		}
+	}
 	}
 
 	//Получаем данные с буфера

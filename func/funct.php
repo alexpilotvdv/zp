@@ -108,3 +108,73 @@
 	$salt = substr(md5(uniqid()), -8);
 	return $salt;
  }
+
+
+ class user{
+   private $id;
+   private $name;
+   private $other;
+
+   public function __construct($user_name){
+         $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'reg` WHERE `login` = "'. $user_name .'"';
+       //  echo $sql;
+         $res = $this->mysqlQuery($sql);
+     		if(mysql_num_rows($res) > 0){
+           $row = mysql_fetch_assoc($res);
+     			 $this->id = $row['id'];
+           echo "id=".$this->id." ";
+             $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'profile` WHERE `pr_id_reg` = "'. $this->id .'"';
+             $res = $this->mysqlQuery($sql);
+                if(mysql_num_rows($res) > 0){
+ //профиль заполнен
+                }
+                else{
+                  echo"no record profile";
+                  //вывести форму ввода данных в профиль
+                  //**************
+                  print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
+                  print"  <input type=\"hidden\" name=\"mode\" value=\"addzapis\">";
+                  print"  <input type=\"hidden\" name=\"kod\" value=\"$this->id\">";
+                  print" <p>Введите имя</p>";
+                  print"  <input type=\"text\" name=\"name\" size=\"42\"><br>";
+                  print" <p>Введите описание</p>";
+                  print"  <input type=\"text\" name=\"other\" size=\"42\"><br>";
+                  print"  <INPUT TYPE=\"submit\" VALUE=\"Загрузить\">";
+                  print"</FORM>";
+                  //**************
+                }
+         }
+         else{
+           echo"no record";
+         }
+   }
+public function recordname($name,$other){
+  //запись в базу имени $query = "INSERT INTO foto VALUES (\"$kod\",\"$identificatorimg\",\"$opisfoto\")";
+  //$query = 'INSERT INTO '. BEZ_DBPREFIX .'profile VALUES ("'.$this->id.'","'.$name.'","'.$other.'")';
+  $sql = 'INSERT INTO `'. BEZ_DBPREFIX .'profile`
+      VALUES(
+          "",
+          "'. $this->id .'",
+          "'. $name .'",
+          "'. $other .'"
+          )';
+
+
+  //echo $query;
+  $res = $this->mysqlQuery($sql);
+}
+   public function mysqlQuery($sql)
+   {
+  	$res = mysql_query($sql);
+  	/* Проверяем результат
+  	Это показывает реальный запрос, посланный к MySQL, а также ошибку. Удобно при отладке.*/
+  	if(!$res)
+  	{
+  		$message  = 'Неверный запрос: ' . mysql_error() . "\n";
+  		$message .= 'Запрос целиком: ' . $sql;
+  		die($message);
+  	}
+
+  	return $res;
+   }
+ }
