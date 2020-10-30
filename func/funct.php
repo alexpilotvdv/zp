@@ -119,35 +119,61 @@
          $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'reg` WHERE `login` = "'. $user_name .'"';
        //  echo $sql;
          $res = $this->mysqlQuery($sql);
-     		if(mysql_num_rows($res) > 0){
-           $row = mysql_fetch_assoc($res);
+     	  	if(mysql_num_rows($res) > 0){
+           $row = mysql_fetch_assoc($res); //while ($row = $result->fetch_assoc())
+           //заполним переменные из базы
      			 $this->id = $row['id'];
            echo "id=".$this->id." ";
              $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'profile` WHERE `pr_id_reg` = "'. $this->id .'"';
              $res = $this->mysqlQuery($sql);
                 if(mysql_num_rows($res) > 0){
- //профиль заполнен
+ //профиль заполнен, заполним переменные объекта из базы
+                   $res = $this->mysqlQuery($sql);
+                   $row = mysql_fetch_assoc($res);
+                   $this->name = $row['pr_name'];
+                   $this->other = $row['pr_other'];
+                   //вывести форму в режиме правки
+                   $this->showform("editform");
                 }
                 else{
+                  $this->name = '';
+                  $this->other = '';
                   echo"no record profile";
                   //вывести форму ввода данных в профиль
                   //**************
-                  print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
-                  print"  <input type=\"hidden\" name=\"mode\" value=\"addzapis\">";
-                  print"  <input type=\"hidden\" name=\"kod\" value=\"$this->id\">";
-                  print" <p>Введите имя</p>";
-                  print"  <input type=\"text\" name=\"name\" size=\"42\"><br>";
-                  print" <p>Введите описание</p>";
-                  print"  <input type=\"text\" name=\"other\" size=\"42\"><br>";
-                  print"  <INPUT TYPE=\"submit\" VALUE=\"Загрузить\">";
-                  print"</FORM>";
+                  $this->showform("addzapis");
+
                   //**************
                 }
          }
          else{
-           echo"no record";
+           echo"no record, not register";
          }
    }
+/////функция для вывода формы
+public function showform($action){
+  print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
+  print"  <input type=\"hidden\" name=\"mode\" value=\"".$action."\">";
+  print"  <input type=\"hidden\" name=\"kod\" value=\"".$this->id."\">";
+  print" <p>Введите Ваше имя</p>";
+  print"  <input type=\"text\" name=\"name\" size=\"42\" value=\"".$this->name."\"><br>";
+  print" <p>Введите Ваш номер телефона</p>";
+  print"  <input type=\"text\" name=\"other\" size=\"42\" value=\"".$this->other."\"><br>";
+  print"  <p><INPUT TYPE=\"submit\" VALUE=\"Загрузить\"></p>";
+  print"</FORM>";
+}
+public function showfoto(){
+  //должна показать фото, если загружено и ссылку удалить фотографии
+  //если фото не загружено, показать форму загрузки фото
+}
+
+public function editrecord($name,$other){
+  $sql = 'UPDATE `'. BEZ_DBPREFIX .'profile`
+      SET `pr_name` = "'.$name.'",
+          `pr_other` = "'.$other.'"
+      WHERE `pr_id_reg` = "'. $this->id .'"';
+  $res = mysqlQuery($sql);
+}
 public function recordname($name,$other){
   //запись в базу имени $query = "INSERT INTO foto VALUES (\"$kod\",\"$identificatorimg\",\"$opisfoto\")";
   //$query = 'INSERT INTO '. BEZ_DBPREFIX .'profile VALUES ("'.$this->id.'","'.$name.'","'.$other.'")';

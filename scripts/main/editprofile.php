@@ -26,11 +26,19 @@
         //echo $_POST['name'];
         if(isset($_POST['name'])){
         //записать в базу
-        $objuser->recordname($_POST['name'],"---");
+        $objuser->recordname($_POST['name'],$_POST['other']);
         header('Location:'. BEZ_HOST .'?mode=profile');
         }
         else {echo"Имя не может быть пустым"; }
       }
+
+      if($_POST['mode']=="editform"){
+         $objuser->editrecord($_POST['name'],$_POST['other']);
+         header('Location:'. BEZ_HOST .'?mode=profile');
+
+
+       }
+
     }
  }
 

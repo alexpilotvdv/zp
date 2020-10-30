@@ -73,6 +73,16 @@ if(isset($_POST['mode'])){
 			echo "пшел нах";
 		}
 	}
+
+	if($_POST['mode']=="editform"){
+		if($user == true){
+			include './scripts/main/editprofile.php';
+		}
+		else {
+			echo "пшел нах";
+		}
+	}
+
 	}
 
 	//Получаем данные с буфера
