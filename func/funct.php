@@ -5,6 +5,71 @@
  * Регистрация пользователя письмом
  */
 
+ function img_resize($src, $dest, $width, $height, $rgb=0xFFFFFF, $quality=100){
+   if (!file_exists($src)) return false;
+
+   $size = getimagesize($src);
+
+   if ($size === false) return false;
+
+   // Определяем исходный формат по MIME-информации, предоставленной
+   // функцией getimagesize, и выбираем соответствующую формату
+   // imagecreatefrom-функцию.
+   $format = strtolower(substr($size['mime'], strpos($size['mime'], '/')+1));
+   $icfunc = "imagecreatefrom" . $format;
+   if (!function_exists($icfunc)) return false;
+
+   $x_ratio = $width / $size[0];
+   $y_ratio = $height / $size[1];
+
+   $ratio       = min($x_ratio, $y_ratio);
+   $use_x_ratio = ($x_ratio == $ratio);
+
+   $new_width   = $use_x_ratio  ? $width  : floor($size[0] * $ratio);
+   $new_height  = !$use_x_ratio ? $height : floor($size[1] * $ratio);
+   $new_left    = $use_x_ratio  ? 0 : floor(($width - $new_width) / 2);
+   $new_top     = !$use_x_ratio ? 0 : floor(($height - $new_height) / 2);
+
+   $isrc = $icfunc($src);
+   $idest = imagecreatetruecolor($width, $height);
+
+   imagefill($idest, 0, 0, $rgb);
+   imagecopyresampled($idest, $isrc, $new_left, $new_top, 0, 0,
+     $new_width, $new_height, $size[0], $size[1]);
+
+   imagejpeg($idest, $dest, $quality);
+
+   imagedestroy($isrc);
+   imagedestroy($idest);
+
+   return true;
+
+ }
+
+ function resize($image, $w_o = false, $h_o = false) {
+    if (($w_o < 0) || ($h_o < 0)) {
+      echo "Некорректные входные параметры";
+      return false;
+    }
+    list($w_i, $h_i, $type) = getimagesize($image); // Получаем размеры и тип изображения (число)
+    $types = array("", "gif", "jpeg", "png"); // Массив с типами изображений
+    $ext = $types[$type]; // Зная "числовой" тип изображения, узнаём название типа
+    if ($ext) {
+      $func = 'imagecreatefrom'.$ext; // Получаем название функции, соответствующую типу, для создания изображения
+      $img_i = $func($image); // Создаём дескриптор для работы с исходным изображением
+    } else {
+      echo 'Некорректное изображение'; // Выводим ошибку, если формат изображения недопустимый
+      return false;
+    }
+    /* Если указать только 1 параметр, то второй подстроится пропорционально */
+    if (!$h_o) $h_o = $w_o / ($w_i / $h_i);
+    if (!$w_o) $w_o = $h_o / ($h_i / $w_i);
+    $img_o = imagecreatetruecolor($w_o, $h_o); // Создаём дескриптор для выходного изображения
+    imagecopyresampled($img_o, $img_i, 0, 0, 0, 0, $w_o, $h_o, $w_i, $h_i); // Переносим изображение из исходного в выходное, масштабируя его
+    $func = 'image'.$ext; // Получаем функция для сохранения результата
+    return $func($img_o, $image); // Сохраняем изображение в тот же файл, что и исходное, возвращая результат этой операции
+  }
+
   //Ключ защиты
  if(!defined('BEZ_KEY'))
  {
@@ -50,13 +115,15 @@
    $subject = '=?utf-8?b?'. base64_encode($subject) .'?=';
 
    //Формируем заголовки для почтового сервера
-   $headers = "Content-type: text/html; charset=\"utf-8\"\r\n";
-   $headers .= "From: ". $from ."\r\n";
+
+   $headers = "Content-type:text/html; charset=\"utf-8\"\r\n";
+   $headers .= "From:". $from ."\r\n";
    $headers .= "MIME-Version: 1.0\r\n";
    $headers .= "Date: ". date('D, d M Y h:i:s O') ."\r\n";
 
+   $messagehtml="<html> <head> <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" /></head><body>".$message."</body></html>";
    //Отправляем данные на ящик админа сайта
-   if(!mail($to, $subject, $message))
+   if(!mail($to, $subject, $messagehtml,$headers))
       return 'Ошибка отправки письма!';
    else
       return true;
@@ -114,7 +181,6 @@
    private $id;
    private $name;
    private $other;
-
    public function __construct($user_name){
          $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'reg` WHERE `login` = "'. $user_name .'"';
        //  echo $sql;
@@ -159,12 +225,85 @@ public function showform($action){
   print"  <input type=\"text\" name=\"name\" size=\"42\" value=\"".$this->name."\"><br>";
   print" <p>Введите Ваш номер телефона</p>";
   print"  <input type=\"text\" name=\"other\" size=\"42\" value=\"".$this->other."\"><br>";
-  print"  <p><INPUT TYPE=\"submit\" VALUE=\"Загрузить\"></p>";
+  print"  <p><INPUT TYPE=\"submit\" VALUE=\"Сохранить\"></p>";
   print"</FORM>";
 }
-public function showfoto(){
+public function showfoto($header){
   //должна показать фото, если загружено и ссылку удалить фотографии
   //если фото не загружено, показать форму загрузки фото
+  // выводим форму загрузки файла
+  //**************
+  $IMGHIx=480;
+  $IMGHIy=360;
+  //$work_dir = $_SERVER['DOCUMENT_ROOT']
+//  $work_dir = $_SERVER['HTTP_HOST'] .'/zp';
+//  $work_dir=$work_dir."/imgobj/";
+//проверим, есть ли фото. Если есть, то вывести фото, иначе форму.
+$sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'foto` WHERE `ft_id_reg` = "'. $this->id .'"';
+$res = $this->mysqlQuery($sql);
+if(mysql_num_rows($res) > 0){
+//выведем фото
+   $row = mysql_fetch_assoc($res);
+   echo '<img src="imgobj/'.$row['ft_img'].'"><p>';
+   echo '<a href="index.php?mode=deletefoto">Удалить фото</a>';
+}
+ else {
+//если фото нет в базе, выведем форму
+print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
+print"  <input type=\"hidden\" name=\"mode\" value=\"upload\">";
+print"  <input type=\"hidden\" name=\"kod\" value=\"$this->id\">";
+print"  <INPUT TYPE=\"hidden\" NAME=\"MAX_FILE_SIZE\" VALUE=\"6000000\">";
+print"  Загрузить фото <INPUT NAME=\"img\" TYPE=\"file\"><BR>";
+print"  <INPUT TYPE=\"submit\" VALUE=\"Загрузить\">";
+print"</FORM>";
+ }
+
+  $work_dir=BEZ_HOST."/imgobj/";
+
+  //**************
+  if(isset($_POST['mode'])){
+  if($_POST['mode']=="upload"){
+  // определяем уникальное имя файла
+  $identificatorimg = uniqid("i",FALSE);// Генерируется строка
+  str_replace('.','',$identificatorimg);//уберем точки, вдруг в конце будет
+  $newimgfile="./imgobj/".$identificatorimg.".jpg";
+//  echo $_FILES['img']['tmp_name'];
+  if(move_uploaded_file($_FILES['img']['tmp_name'],$newimgfile)){
+    echo "Файл корректен и был успешно загружен.\n";
+    //изменим размеры
+    resize($newimgfile, 150);
+    // Подключиться к серверу и выбрать базу данных
+    $sql='INSERT INTO `'. BEZ_DBPREFIX .'foto`
+          VALUES(
+            "'. $this->id .'",
+            "'. $identificatorimg .'.jpg"
+            )';
+        $res = mysqlQuery($sql);
+        header($header);
+ } else {
+     echo "Возможная атака с помощью файловой загрузки!\n";
+ }
+
+
+    }
+  }
+}
+
+public function deletefoto($header){
+  //найдем имя файла в базе
+  $sql = 'SELECT * FROM `'. BEZ_DBPREFIX .'foto` WHERE `ft_id_reg` = "'. $this->id .'"';
+  $res = $this->mysqlQuery($sql);
+  if(mysql_num_rows($res) > 0){
+  //выведем фото
+     $row = mysql_fetch_assoc($res);
+     $FILEtoDEL="./imgobj/".$row['ft_img'];
+     unlink($FILEtoDEL);
+     $sql = "DELETE FROM ".BEZ_DBPREFIX."foto WHERE ft_id_reg=\"$this->id\"";
+    $res = $this->mysqlQuery($sql);
+    header($header);
+  }
+
+
 }
 
 public function editrecord($name,$other){
@@ -203,4 +342,16 @@ public function recordname($name,$other){
 
   	return $res;
    }
+ }
+
+//генератор пароля из строки
+ function gen_password($length = 6)
+ {
+ 	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP';
+ 	$size = strlen($chars) - 1;
+ 	$password = '';
+ 	while($length--) {
+ 		$password .= $chars[rand(0, $size)];
+ 	}
+ 	return $password;
  }

@@ -8,3 +8,7 @@ CREATE TABLE IF NOT EXISTS `bez_reg` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE `bez_foto` (
+  `ft_id_reg` int(11) NOT NULL,
+  `ft_img` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=cp1251;

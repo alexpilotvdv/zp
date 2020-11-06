@@ -48,6 +48,11 @@
 			include './scripts/auth/show.php';
 		break;
 
+		case 'changepass':
+			include './scripts/auth/chpass.php';
+			include './scripts/auth/chpass_form.html';
+		break;
+
 		case 'exit':
 			$_SESSION['user'] = false;
 			header('Location: ' . BEZ_HOST );
@@ -56,10 +61,22 @@
 		case 'profile':
 		if($user == true){
 			include './scripts/main/editprofile.php';
+			break;
 		}
-		else {
-			echo "пшел нах";
+		case 'deletefoto':
+		if($user == true){
+			include './scripts/main/editprofile.php';
+			break;
 		}
+		case 'resetpass':
+
+			include './scripts/auth/auth.php';
+			break;
+
+
+	//	else {
+	//		echo "пшел нах";
+	//	}
 		break;
 
 	}
@@ -75,6 +92,15 @@ if(isset($_POST['mode'])){
 	}
 
 	if($_POST['mode']=="editform"){
+		if($user == true){
+			include './scripts/main/editprofile.php';
+		}
+		else {
+			echo "пшел нах";
+		}
+	}
+
+	if($_POST['mode']=="upload"){
 		if($user == true){
 			include './scripts/main/editprofile.php';
 		}

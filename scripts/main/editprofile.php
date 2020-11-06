@@ -21,6 +21,12 @@
 	echo '<h3>Профиль</h3>'."\n";
   echo '<h4>' . $user_name . '</h4>'."\n";
   $objuser=new user($user_name);
+  $header='Location:'. BEZ_HOST .'?mode=profile';
+  $objuser->showfoto($header);
+  if($mode=="deletefoto"){
+   $header='Location:'. BEZ_HOST .'?mode=profile';
+   $objuser->deletefoto($header);
+ }
   if(isset($_POST['mode'])){
      if($_POST['mode']=="addzapis"){
         //echo $_POST['name'];

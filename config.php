@@ -38,5 +38,5 @@
  define('BEZ_HOST','http://'. $_SERVER['HTTP_HOST'] .'/zp/');
 
  //Адрес почты от кого отправляем
- define('BEZ_MAIL_AUTOR','Регистрация на сервис записи на полеты <no reply>');
+ define('BEZ_MAIL_AUTOR','<info@aero-klub.ru>');
  ?>
