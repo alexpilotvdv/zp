@@ -21,101 +21,76 @@
 	$user_name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : false;
 	$err = array();
 
+
+
 	//Устанавливаем ключ защиты
 	define('BEZ_KEY', true);
 
 	//Подключаем конфигурационный файл
-	include './config.php';
+	include '../config.php';
 
 	//Подключаем скрипт с функциями
-	include './func/funct.php';
+	include '../func/funct.php';
 
 	//подключаем MySQL
-	include './bd/bd.php';
+	include '../bd/bd.php';
+
+	//проверим, является ли пользователь админом
+		if($user === true){
+			$sql = 'SELECT *
+	        FROM `'. BEZ_DBPREFIX .'profile`, `'. BEZ_DBPREFIX .'reg`
+	        WHERE `login` = "'. $user_name .'" AND `id` = `pr_id_reg`';
+	    $res = mysqlQuery($sql);
+	    if(mysql_num_rows($res) > 0){
+	      $row = mysql_fetch_assoc($res);
+	      echo 'Пользователь: ' . $row['pr_name'];
+				//является ли пользователь админом (код 7)
+				if($row['pr_status']=='7'){
+				$user_admin=true;
+			} else {
+		  	$user_admin=false;
+			}
+		} else {
+			$user_admin=false;
+		}
+	}
 
 	switch($mode)
 	{
-		//Подключаем обработчик с формой регистрации
-		case 'reg':
-			include './scripts/reg/reg.php';
-			include './scripts/reg/reg_form.html';
+
+		case 'users':
+		//вывести всех  пользователей
+			include 'showuser.php';
 		break;
 
-		//Подключаем обработчик с формой авторизации
-		case 'auth':
-			include './scripts/auth/auth.php';
-			include './scripts/auth/auth_form.html';
-			include './scripts/auth/show.php';
+		case 'records':
+			//вывести дни записей на полеты
+		break;
+		case false:
+		header('Location:'. BEZ_HOST .'');
 		break;
 
-		case 'changepass':
-			include './scripts/auth/chpass.php';
-			include './scripts/auth/chpass_form.html';
-		break;
-
-		case 'exit':
-			$_SESSION['user'] = false;
-			header('Location: ' . BEZ_HOST );
-		break;
-
-		case 'profile':
-		if($user == true){
-			include './scripts/main/editprofile.php';
-			break;
-		}
-		case 'deletefoto':
-		if($user == true){
-			include './scripts/main/editprofile.php';
-			break;
-		}
-		case 'resetpass':
-
-			include './scripts/auth/auth.php';
-			break;
-	//	else {
-	//		echo "пшел нах";
-	//	}
-	  case false:
-
-		include './scripts/main/showall.php';
-		break;
 
 	}
 	//в перспективе можно если установлен, то присвоить переменной $mode
 if(isset($_POST['mode'])){
 	if($_POST['mode']=="addzapis"){
 		if($user == true){
-			include './scripts/main/editprofile.php';
-		}
-		else {
+			//include './scripts/main/editprofile.php';
+		}	else {
 			echo "пшел нах";
 		}
 	}
-
-	if($_POST['mode']=="editform"){
-		if($user == true){
-			include './scripts/main/editprofile.php';
-		}
-		else {
-			echo "пшел нах";
-		}
 	}
-
-	if($_POST['mode']=="upload"){
-		if($user == true){
-			include './scripts/main/editprofile.php';
-		}
-		else {
-			echo "пшел нах";
-		}
-	}
-
-}
 
 	//Получаем данные с буфера
 	$content = ob_get_contents();
 	ob_end_clean();
 
 	//Подключаем наш шаблон
-	include './html/index.html';
+	include '../html/indexadmin.html';
+
+
+
+
 ?>

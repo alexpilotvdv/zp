@@ -21,6 +21,7 @@
  {
 	echo '<h3>Поздравляю, Вы вошли в систему!</h3>'."\n";
   echo '<h4>' . $user_name . '</h4>'."\n";
+   header('Refresh:2;url='. BEZ_HOST .'');
  }
 
 	?>

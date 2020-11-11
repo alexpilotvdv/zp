@@ -11,4 +11,34 @@ CREATE TABLE IF NOT EXISTS `bez_reg` (
 CREATE TABLE `bez_foto` (
   `ft_id_reg` int(11) NOT NULL,
   `ft_img` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=cp1251;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bez_profile` (
+  `pr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pr_id_reg` int(11) NOT NULL,
+  `pr_name` varchar(100) NOT NULL,
+  `pr_other` varchar(15) NOT NULL,
+  `pr_status` int(1) NOT NULL,
+  PRIMARY KEY (`pr_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `bez_records` (
+  `rec_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rec_iduser` int(11) NOT NULL,
+  `rec_day` int(11) NOT NULL,
+  `rec_plan_nalet` time NOT NULL,
+  `rec_fact_nalet` time NOT NULL,
+  PRIMARY KEY (`pr_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bez_day_for_flight` (
+  `day_id` int(11) NOT NULL AUTO_INCREMENT,
+  `day_data` date NOT NULL,
+  `day_status` int(1) NOT NULL,
+  `day_start` datetime NOT NULL,
+  `day_end` datetime NOT NULL,
+  `day_total_time` time NOT NULL,
+  `day_info` varchar(500) NOT NULL,
+   PRIMARY KEY (`day_id` )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,25 +1,23 @@
 <h2>Введите свой Логин и Пароль для входа!</h2>
 	<form action="" method="POST">
-		<table>
-			<tr>
-				<td>E-mail:</td>
-				<td><input type="text" size="30" name="email"></td>
-			</tr>
-			<tr>
-				<td>Пароль:</td>
-				<td><input type="password" size="30" maxlength="20" name="pass"></td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td colspan="2"><input type="submit" value="Войти" name="submit"></td>
-			</tr>
-			<tr>
-          <td colspan="2">Если вы забыли пароль, заполните поле E-mail и нажмите "Сбросить..."</td>
-			</tr>
+		<div class="col-sm-3 my-1">
+		<div class="form-group">
+			<label for="exampleInputEmail1">Email address</label>
+			<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+			<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+		</div>
 
-			<tr>
-				<td>&nbsp;</td>
-				<td colspan="2"><input type="submit" value="Сбросить пароль и выслать новый" name="submitpass"></td>
-			</tr>
-		</table>
-	</form>
+
+		<div class="form-group">
+	    <label for="exampleInputPassword1">Пароль</label>
+	    <input type="password" class="form-control" id="exampleInputPassword1" name="pass">
+	  </div>
+		<button type="submit" class="btn btn-primary" name="submit">Войти</button>
+
+
+	<div class="form-group">
+		 <label for="formGroupExampleInput">Если вы забыли пароль, заполните поле E-mail и нажмите "Сбросить..."</label>
+	</div>
+  <button type="submit" class="btn btn-primary" name="submitpass">Сбросить пароль и выслать новый</button>
+	</div>
+</form>

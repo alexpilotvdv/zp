@@ -64,6 +64,7 @@ if(empty($_POST['pass']))
           SET `pass` ="'.$newpassmd.'"
           WHERE `login` = "'. $user_name .'"';
           $res = mysqlQuery($sql);
+     header('Location:'. BEZ_HOST .'?mode=exit');
     }
     }
 

@@ -1,27 +1,25 @@
-<h2>Регистрация пользователей PHP MySQL с активацией письмом</h2>
+<h2>Регистрация пользователей на сервис записи на полеты с активацией письмом</h2>
 	<form action="" method="POST">
-		<table>
-			<tr>
-				<td>E-mail<font color="red">*</font>:</td>
-				<td><input type="text" size="30" name="email"></td>
-			</tr>
-			<tr>
-				<td>Пароль<font color="red">*</font>:</td>
-				<td><input type="password" size="30" maxlength="20" name="pass"></td>
-			</tr>
-			<tr>
-				<td>Подтверждения пароля<font color="red">*</font>:</td>
-				<td><input type="password" size="30" maxlength="20" name="pass2"></td>
-			</tr>
-			<tr>
-				<td>Проверочный код<font color="red">*</font>:</td>
-				<td><input type="text" size="30" name="prkod"></td>
-			</tr>
-			<tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td colspan="2"><input type="submit" value="Зарегистроваться" name="submit"></td>
-			</tr>
-		</table>
+<div class="col-sm-3 my-1">
+<div class="form-group">
+	<label for="exampleInputEmail1">Email address</label>
+	<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+	<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+</div>
+
+<div class="form-group">
+	<label for="exampleInputPassword1">Пароль</label>
+	<input type="password" class="form-control" id="exampleInputPassword1" name="pass">
+</div>
+
+<div class="form-group">
+	<label for="exampleInputPassword1">Подтверждение пароля</label>
+	<input type="password" class="form-control" id="exampleInputPassword1" name="pass2">
+</div>
+<div class="form-group">
+  <label for="formGroupExampleInput">Проверочный код (скорость А27 в наборе с закрылками)</label>
+  <input type="text" class="form-control" id="formGroupExampleInput" name="prkod">
+</div>
+<button type="submit" class="btn btn-primary" name="submit">Зарегистрироваться</button>
+
 	</form>
-<br>Поля со значком <font color="red">*</font> обязательны для заполнения

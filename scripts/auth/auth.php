@@ -14,7 +14,7 @@
  if($mode=="resetpass"){
   // echo"reset";
    $newpass=gen_password();
-   echo $newpass;
+   echo '<b>Ваш новый пароль отправлен на email!</b>';
    //Проверяем ключ
    $sql = 'SELECT *
        FROM `'. BEZ_DBPREFIX .'reg`
@@ -59,6 +59,7 @@ $title = 'Регистрация на сервис записи на полет�
 $url = BEZ_HOST .'?mode=resetpass&key='. md5($row['salt']);
 $message = '<p>Для сброса пароля пройдите по ссылке <a href="' . $url . '">' . $url . '</a>';
 sendMessageMail($_POST['email'], BEZ_MAIL_AUTOR, $title, $message);
+echo "<p><h3>Проверьте свой email!</h3></p>";
   }
 }
 }

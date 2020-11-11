@@ -176,6 +176,38 @@
 	return $salt;
  }
 
+ ////для вывода элементов в таблицу
+ class smartTable{
+   private $rez;//здесь будет собираться код таблицы
+
+   public function __construct(){
+       //формирует заголовок таблицы
+       $this->rez = '<table class="table table-striped">
+                      <thead>
+                        <tr>';
+
+       $args = func_get_args();
+       foreach ($args as $arg) {
+         $this->rez .= '<th scope="col">' . $arg . '</th>';
+         }
+       $this->rez .=	'</tr> </thead><tbody>';
+   }
+   public function insertrow(){
+     //вставляет строку в таблицу
+     $args = func_get_args();
+     $this->rez .='<tr>';
+     foreach ($args as $arg) {
+       $this->rez .= '<td>' . $arg . '</td>';
+       }
+       $this->rez .='</tr>';
+   }
+   public function showtable(){
+     $this->rez .='</tbody>
+                   </table>';
+                   echo $this->rez;
+   }
+
+   }
 
  class user{
    private $id;
@@ -219,14 +251,25 @@
 /////функция для вывода формы
 public function showform($action){
   print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
+  echo '<div class="col-sm-3 my-1">';
   print"  <input type=\"hidden\" name=\"mode\" value=\"".$action."\">";
   print"  <input type=\"hidden\" name=\"kod\" value=\"".$this->id."\">";
-  print" <p>Введите Ваше имя</p>";
-  print"  <input type=\"text\" name=\"name\" size=\"42\" value=\"".$this->name."\"><br>";
-  print" <p>Введите Ваш номер телефона</p>";
-  print"  <input type=\"text\" name=\"other\" size=\"42\" value=\"".$this->other."\"><br>";
-  print"  <p><INPUT TYPE=\"submit\" VALUE=\"Сохранить\"></p>";
+  echo'<div class="form-group">';
+  echo'<label for="formGroupExampleInput">Введите Ваше имя"Сбросить..."</label>';
+  echo'<input type="text" class="form-control" id="inputCity" name="name" value="'.$this->name.'">';
+  echo'</div>';
+  echo'<div class="form-group">';
+  echo'<label for="formGroupExampleInput">Введите Ваш номер телефона (7-***-**-**)</label>';
+  echo'<input type="text" class="form-control" id="inputCity" name="other" value="'.$this->other.'">';
+  echo'</div>';
+  echo '<button type="submit" class="btn btn-primary" name="submit">Сохранить</button>';
+  //print" <p>Введите Ваше имя</p>";
+  //print"  <input type=\"text\" name=\"name\" size=\"42\" value=\"".$this->name."\"><br>";
+//  print" <p>Введите Ваш номер телефона</p>";
+//  print"  <input type=\"text\" name=\"other\" size=\"42\" value=\"".$this->other."\"><br>";
+//  print"  <p><INPUT TYPE=\"submit\" VALUE=\"Сохранить\"></p>";
   print"</FORM>";
+  echo '</div>';
 }
 public function showfoto($header){
   //должна показать фото, если загружено и ссылку удалить фотографии
@@ -249,13 +292,22 @@ if(mysql_num_rows($res) > 0){
 }
  else {
 //если фото нет в базе, выведем форму
+echo '<div class="col-sm-3 my-1">';
 print"  <FORM ENCTYPE=\"multipart/form-data\" ACTION=\"index.php\" METHOD=\"POST\">";
+echo '<div class="form-group">';
+echo'<label for="exampleFormControlFile1">Загрузить фото (формат jpeg!)</label>';
+echo'<input type="file" class="form-control-file" id="exampleFormControlFile1" name="img">';
+echo'</div>';
+echo'<button type="submit" class="btn btn-primary" name="submit">Загрузить</button>';
+
 print"  <input type=\"hidden\" name=\"mode\" value=\"upload\">";
 print"  <input type=\"hidden\" name=\"kod\" value=\"$this->id\">";
 print"  <INPUT TYPE=\"hidden\" NAME=\"MAX_FILE_SIZE\" VALUE=\"6000000\">";
-print"  Загрузить фото <INPUT NAME=\"img\" TYPE=\"file\"><BR>";
-print"  <INPUT TYPE=\"submit\" VALUE=\"Загрузить\">";
+
+//print"  Загрузить фото <INPUT NAME=\"img\" TYPE=\"file\"><BR>";
+//print"  <INPUT TYPE=\"submit\" VALUE=\"Загрузить\">";
 print"</FORM>";
+echo '</div>';
  }
 
   $work_dir=BEZ_HOST."/imgobj/";
@@ -281,7 +333,7 @@ print"</FORM>";
         $res = mysqlQuery($sql);
         header($header);
  } else {
-     echo "Возможная атака с помощью файловой загрузки!\n";
+     echo "Возможная атака с помощью файловой загрузки либо не выбран файл!\n";
  }
 
 
@@ -321,7 +373,8 @@ public function recordname($name,$other){
           "",
           "'. $this->id .'",
           "'. $name .'",
-          "'. $other .'"
+          "'. $other .'",
+          "0"
           )';
 
 
