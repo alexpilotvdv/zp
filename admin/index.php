@@ -63,12 +63,17 @@
 			include 'showuser.php';
 		break;
 
+		case 'activate':
+		//вывести всех  пользователей
+			include 'activate.php';
+		break;
+
 		case 'records':
 			//вывести дни записей на полеты
 		break;
-		case false:
-		header('Location:'. BEZ_HOST .'');
-		break;
+	//	case false:
+	//	header('Location:'. BEZ_HOST .'');
+	//	break;
 
 
 	}

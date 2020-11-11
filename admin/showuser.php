@@ -28,7 +28,14 @@
          } else{
            $tpimg='<img src="' . BEZ_HOST . 'imgobj/' . $row['ft_img'] . '">';
          }
-$objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $row['status']);
+         //соберем ссылку для активации
+         if($row['status']==0){
+           $tpstatus='<a href="?mode=activate&id=' . $row['id'] . '">Активировать</a>';
+         } else{
+           $tpstatus="Активирован";
+         }
+
+$objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $tpstatus);
 
        }
        $objTable->showtable();
