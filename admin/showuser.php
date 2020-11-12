@@ -38,6 +38,7 @@
 $objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $tpstatus);
 
        }
+       $objTable->show_pages(1,5,'mode=users');
        $objTable->showtable();
       echo "</div>";
    }

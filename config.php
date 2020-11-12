@@ -22,6 +22,9 @@
  //Пароль БД
  define('BEZ_DBPASSWORD','alp7211');
 
+ //сколько элементов выводить на странице
+ define('PAGE_MAX','5');
+
  //БД
  define('BEZ_DATABASE','e9sotok_00');
 

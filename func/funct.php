@@ -179,13 +179,13 @@
  ////для вывода элементов в таблицу
  class smartTable{
    private $rez;//здесь будет собираться код таблицы
-
+   private $pages;
    public function __construct(){
        //формирует заголовок таблицы
        $this->rez = '<table class="table table-striped">
                       <thead>
                         <tr>';
-
+       $this->pages = '';
        $args = func_get_args();
        foreach ($args as $arg) {
          $this->rez .= '<th scope="col">' . $arg . '</th>';
@@ -204,7 +204,35 @@
    public function showtable(){
      $this->rez .='</tbody>
                    </table>';
-                   echo $this->rez;
+    $this->rez .= $this->pages;
+                 echo $this->rez;
+   }
+   public function show_pages($curr_page,$total_page,$action){
+     $tp_pages='';
+     $tp_pages .= '<nav aria-label="...">
+  <ul class="pagination">';
+  //пока делаю страницы все без кнопок пердыдущая, следующая
+  for ($i=1;$i<=$total_page;$i++){
+    if($i==$curr_page){
+      $tp_pages .='<li class="page-item disabled">';
+      $tp_pages .='<li class="page-item active">';
+    } else{
+      $tp_pages .= '<li class="page-item">';
+    }
+
+      $tp_pages .='<a class="page-link" href="?' . $action . '&page=' . $i . '">' . $i . '</a>';
+
+    if($i==$curr_page){
+        $tp_pages .='</li>';
+        $tp_pages .='</li>';
+      } else{
+        $tp_pages .= '</li>';
+      }
+  }
+
+  $tp_pages .='</ul>
+     </nav>';
+     $this->pages=$tp_pages;
    }
 
    }
