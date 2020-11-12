@@ -49,7 +49,12 @@
 $objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $tpstatus);
 
        }
-       $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),(int)($tp_col / PAGE_MAX),'mode=users');
+       if($tp_col - (PAGE_MAX * (int)($tp_col / PAGE_MAX)) > 0){
+         $tp_vsego_pages = (int)($tp_col / PAGE_MAX) + 1;
+       } else {
+         $tp_vsego_pages = (int)($tp_col / PAGE_MAX);
+       }
+       $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),$tp_vsego_pages,'mode=users');
        $objTable->showtable();
       echo "</div>";
    }

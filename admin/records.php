@@ -39,7 +39,12 @@ if($user === true){
      $objTable->insertrow($row['day_data'], $row['day_status']);
 
       }
-      $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),(int)($tp_col / PAGE_MAX),'mode=records');
+      if($tp_col - (PAGE_MAX * (int)($tp_col / PAGE_MAX)) > 0){
+        $tp_vsego_pages = (int)($tp_col / PAGE_MAX) + 1;
+      } else {
+        $tp_vsego_pages = (int)($tp_col / PAGE_MAX);
+      }
+      $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),$tp_vsego_pages,'mode=records');
       $objTable->showtable();
 
 
