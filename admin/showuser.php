@@ -57,6 +57,7 @@ $objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], 
        $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),$tp_vsego_pages,'mode=users');
        $objTable->showtable();
       echo "</div>";
+      ////
    }
    }
  }
