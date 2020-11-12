@@ -44,6 +44,7 @@
 	    if(mysql_num_rows($res) > 0){
 	      $row = mysql_fetch_assoc($res);
 	      echo 'Пользователь: ' . $row['pr_name'];
+				$id_user=$row['id']; //в дальнейшем понадобится
 				//является ли пользователь админом (код 7)
 				if($row['pr_status']=='7'){
 				$user_admin=true;
@@ -68,8 +69,14 @@
 			include 'activate.php';
 		break;
 
+		case 'formaddday':
+		//вывести всех  пользователей
+			include 'formaddday.html';
+		break;
+
 		case 'records':
 			//вывести дни записей на полеты
+			include 'records.php';
 		break;
 	//	case false:
 	//	header('Location:'. BEZ_HOST .'');
@@ -77,11 +84,11 @@
 
 
 	}
-	//в перспективе можно если установлен, то присвоить переменной $mode
+	//в
 if(isset($_POST['mode'])){
-	if($_POST['mode']=="addzapis"){
+	if($_POST['mode']=="formrez"){
 		if($user == true){
-			//include './scripts/main/editprofile.php';
+				include 'formaddday.php';
 		}	else {
 			echo "пшел нах";
 		}
