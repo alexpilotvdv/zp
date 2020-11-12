@@ -22,6 +22,17 @@
      $res = mysqlQuery($sql);
      if(mysql_num_rows($res) > 0){
        echo'<div class="container">';
+       //определим количество
+       $tp_col=mysql_num_rows($res);
+       //определена ли страница
+       if(isset($_GET['page'])){
+         $tp_first_page = PAGE_MAX * ($_GET['page'] - 1);
+        $sql .=' LIMIT ' . $tp_first_page . ', ' . PAGE_MAX;
+       } else{
+         //страница не определена, вывести первые записи
+         $sql .=' LIMIT 0, ' . PAGE_MAX;
+       }
+      $res = mysqlQuery($sql);
        while ($row = mysql_fetch_assoc($res)) {
          if($row['ft_img']==null){
            $tpimg="нет фото";
@@ -38,7 +49,7 @@
 $objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $tpstatus);
 
        }
-       $objTable->show_pages(1,5,'mode=users');
+       $objTable->show_pages((isset($_GET['page']) ? $_GET['page'] : 1),(int)($tp_col / PAGE_MAX),'mode=users');
        $objTable->showtable();
       echo "</div>";
    }
