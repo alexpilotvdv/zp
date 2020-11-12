@@ -45,8 +45,13 @@
          } else{
            $tpstatus="Активирован";
          }
-
-$objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $row['pr_status'], $tpstatus);
+//$tp_href='<a href="?mode=ch_status&id=' . $row['id'] .'">' . $row['pr_status'] . '</a>';
+//кнопка запуска модального окна
+$tp_href='<button type="button"
+class="btn btn-primary"
+data-toggle="modal" data-target="#exampleModal"
+data-whatever="' . $row['id'] . '" data-role="' . $row['pr_status'] . '">' . $row['pr_status'] . '</button>';
+$objTable->insertrow($tpimg,  $row['pr_name'], $row['login'], $row['pr_other'], $tp_href, $tpstatus);
 
        }
        if($tp_col - (PAGE_MAX * (int)($tp_col / PAGE_MAX)) > 0){

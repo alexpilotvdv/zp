@@ -78,6 +78,11 @@
 			//вывести дни записей на полеты
 			include 'records.php';
 		break;
+
+		case 'ch_status':
+			//вывести дни записей на полеты
+			include 'ch_status.php';
+		break;
 	//	case false:
 	//	header('Location:'. BEZ_HOST .'');
 	//	break;
@@ -92,6 +97,9 @@ if(isset($_POST['mode'])){
 		}	else {
 			echo "пшел нах";
 		}
+	}
+	if($_POST['mode']=="rec_role"){
+		header('Location:'. BEZ_HOST .'admin/?mode=users');
 	}
 	}
 
