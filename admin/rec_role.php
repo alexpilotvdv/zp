@@ -5,4 +5,3 @@ $sql = 'UPDATE `'. BEZ_DBPREFIX .'profile`
    $res = mysqlQuery($sql);
    //echo $sql;
 header('Location:'. BEZ_HOST .'admin/?mode=users');
- ?>
