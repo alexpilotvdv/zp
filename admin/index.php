@@ -99,7 +99,8 @@ if(isset($_POST['mode'])){
 		}
 	}
 	if($_POST['mode']=="rec_role"){
-		header('Location:'. BEZ_HOST .'admin/?mode=users');
+		//необходимо непосредственно внести изменения в базу
+		include 'rec_role.php';
 	}
 	}
 
