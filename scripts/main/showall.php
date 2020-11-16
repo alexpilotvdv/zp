@@ -8,8 +8,8 @@
  if($user === true){
 
      //если пользователь админ
-    $objTable = new \smartTable('Фото','Имя','email','Телефон','Статус','Активирован');
-     
+    $objTable = new smartTable('Фото','Имя','email','Телефон','Статус','Активирован');
+
      $sql = 'SELECT *
          FROM `'. BEZ_DBPREFIX .'reg` LEFT JOIN `'. BEZ_DBPREFIX .'profile`
          ON `id` = `pr_id_reg` LEFT JOIN `'. BEZ_DBPREFIX .'foto`

@@ -35,13 +35,16 @@
 
 	switch($mode)
 	{
-		//Подключаем обработчик с формой регистрации
+
 		case 'reg':
 			include './scripts/reg/reg.php';
 			include './scripts/reg/reg_form.html';
 		break;
 
-		//Подключаем обработчик с формой авторизации
+		case 'zapis':
+			include './scripts/main/zapis.php';
+		break;
+
 		case 'auth':
 			include './scripts/auth/auth.php';
 			include './scripts/auth/auth_form.html';
@@ -77,7 +80,7 @@
 	//	}
 	  case false:
 
-		include './scripts/main/showall.php';
+		include './scripts/main/show_days.php';
 		break;
 
 	}
