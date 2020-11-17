@@ -18,6 +18,7 @@
 	//Определяем переменную для переключателя
 	$mode = isset($_GET['mode'])  ? $_GET['mode'] : false;
 	$user = isset($_SESSION['user']) ? $_SESSION['user'] : false;
+	$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : false;
 	$user_name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : false;
 	$err = array();
 
@@ -94,6 +95,8 @@ if(isset($_POST['mode'])){
 			echo "пшел нах";
 		}
 	}
+
+
 
 	if($_POST['mode']=="editform"){
 		if($user == true){

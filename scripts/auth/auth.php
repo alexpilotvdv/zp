@@ -96,6 +96,7 @@ echo "<p><h3>Проверьте свой email!</h3></p>";
 			{
 				$_SESSION['user'] = true;
         $_SESSION['user_name'] = escape_str($_POST['email']);
+        $_SESSION['user_id'] = $row['id'];
 
 				//Сбрасываем параметры
 				header('Location:'. BEZ_HOST .'?mode=auth');
