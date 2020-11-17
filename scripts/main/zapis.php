@@ -74,7 +74,8 @@ if ($user === true) {
            <select class="custom-select" name="minutes">';
     $sql = 'SELECT *
         FROM `'. BEZ_DBPREFIX .'records`
-        WHERE `rec_iduser` = ' . $user_id . '';
+        WHERE `rec_iduser` = ' . $user_id . '
+        AND `rec_day` = ' . $day_id . '';
 
     $res=mysqlQuery($sql);
     if (mysql_num_rows($res) > 0) {
