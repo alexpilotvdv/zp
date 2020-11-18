@@ -24,19 +24,19 @@ if ($user === true) {
     $res=mysqlQuery($sql);
     if (mysql_num_rows($res) > 0) {
         $row = mysql_fetch_assoc($res);
-        echo'  <div class="row">
-      <div class="col-sm">
-    <div class="card">
+        echo'  <div class="row justify-content-md-center">
+      <div class="col-sm ">
+    <div class="card bg-primary text-white" style="max-width: 540px;">
     <h5 class="card-header">' . $row['day_data'] . '</h5>
     <div class="card-body">
-      <h5 class="card-title">Начало полетов: ' . substr($row['day_start'], -8) . '</h5>
-      <h5 class="card-title">Окончание полетов: ' . substr($row['day_end'], -8) . '</h5>
+      <h5 class="card-title">Начало полетов: ' . substr($row['day_start'], -8,-3) . '</h5>
+      <h5 class="card-title">Окончание полетов: ' . substr($row['day_end'], -8,-3) . '</h5>
       <h5 class="card-title">Планируемый максимальный налет: ' . $row['day_total_time'] . '</h5>
       <p class="card-text">Дополнительная информация: ' . $row['day_info'] . '</p>
       </div>
      </div>
     </div>
-  </div>';
+  </div> <p><h5>Список записавшихся:</h5>';
     }
 
     //выводим информацию по записавшимся
@@ -44,16 +44,43 @@ if ($user === true) {
     FROM `'. BEZ_DBPREFIX .'records`
     LEFT JOIN `'. BEZ_DBPREFIX .'profile`
     ON `rec_iduser` = `pr_id_reg`
-    WHERE `rec_day` = ' . $day_id . '';
+    LEFT JOIN `'. BEZ_DBPREFIX .'foto`
+    ON `rec_iduser` = `ft_id_reg`
+    WHERE `rec_day` = ' . $day_id . '
+    ORDER BY `rec_id`';
     $res=mysqlQuery($sql);
     if (mysql_num_rows($res) > 0) {
-        echo ' <div class="row">
+       echo ' <div class="row">
         <div class="col-sm"><p>';
-        while ($row = mysql_fetch_assoc($res)) {
-            echo'<div class="alert alert-success" role="alert">
-       ' . $row['pr_name'] . ' - ' . $row['rec_plan_nalet'] . ' минут.<br/>
-       ' . $row['rec_info'] . '
-         </div>';
+    //    while ($row = mysql_fetch_assoc($res)) {
+    //        echo'<div class="alert alert-success" role="alert">
+    //   ' . $row['pr_name'] . ' - ' . $row['rec_plan_nalet'] . ' минут.<br/>
+    //   ' . $row['rec_info'] . '
+      //   </div>';
+
+//////////////////////////////////
+while ($row = mysql_fetch_assoc($res)) {
+  if($row['ft_img']==null){
+    $tpimg=BEZ_HOST . 'imgobj/noimg.jpg';
+  } else{
+    $tpimg = BEZ_HOST . 'imgobj/' . $row['ft_img'];
+  }
+echo'<div class="card mb-3" style="max-width: 540px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="' . $tpimg . '" class="card-img" alt="' . $row['pr_name'] . '">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">' . $row['pr_name'] . '</h5>
+        <p class="card-text">Планируемый налет: ' . $row['rec_plan_nalet'] . ' минут.</p>
+        <p class="card-text">' . $row['rec_info'] . '</p>
+        <p class="card-text"><small class="text-muted">Телефон: ' . $row['pr_other'] . '</small></p>
+      </div>
+    </div>
+  </div>
+</div>';
+
         }
         echo'</div>
            </div>';
@@ -63,7 +90,8 @@ if ($user === true) {
     //необходимо проверить, есть ли уже запись этого пользователя
     //если есть, то вывести форму редактирования
     echo ' <div class="row">
-           <div class="col-sm">
+
+           <div class="col-sm col-md-6">
            <form action="" method="POST">
            <input type = "hidden" name = "mode" value = "zapis">
            <input type = "hidden" name = "idday" value = "' . $day_id . '">
@@ -121,6 +149,7 @@ if ($user === true) {
 
     echo ' </form>
             </div>
+
             </div>
             </div>';
     //обработаем данные формы и перезагрузим страницу
