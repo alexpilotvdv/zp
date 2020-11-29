@@ -64,6 +64,10 @@
             include 'showuser.php';
         break;
 
+        case 'changefact':
+            include 'changefact.php';
+        break;
+
         case 'activate':
         //вывести всех  пользователей
             include 'activate.php';
@@ -100,7 +104,9 @@
         case 'rec_role':
             include 'rec_role.php';
             break;
-            // code...
+      //  case 'zapis_fact':
+      //      include 'changefact.php';
+      //  break;
     }
     }
 
