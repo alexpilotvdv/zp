@@ -283,7 +283,7 @@ public function showform($action){
   print"  <input type=\"hidden\" name=\"mode\" value=\"".$action."\">";
   print"  <input type=\"hidden\" name=\"kod\" value=\"".$this->id."\">";
   echo'<div class="form-group">';
-  echo'<label for="formGroupExampleInput">Введите Ваше имя"Сбросить..."</label>';
+  echo'<label for="formGroupExampleInput">Введите Ваше имя</label>';
   echo'<input type="text" class="form-control" id="inputCity" name="name" value="'.$this->name.'">';
   echo'</div>';
   echo'<div class="form-group">';
