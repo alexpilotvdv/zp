@@ -25,7 +25,7 @@ WHERE `rec_id` = ' . $_POST['idday'] . '';
     $res=mysqlQuery($sql);
     if (mysql_num_rows($res) > 0) {
         $row = mysql_fetch_assoc($res);
-        for ($i=0;$i<190;$i=$i+10) {
+        for ($i=0;$i<190;$i=$i+5) {
             if ($i==$row['rec_fact_nalet']) {
                 echo'<option selected value="' . $i . '">' . $i . '</option>';
             } else {
