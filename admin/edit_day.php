@@ -59,6 +59,14 @@ $row = mysql_fetch_assoc($res);
 //определим переменную чекбокса
 $tp_ch=($row['day_status']=='1') ? 'checked="checked"' : '';
 //echo substr($row['day_start'],-8,-3);
+echo '<script type="text/javascript" src="' . BEZ_HOST . 'js/nicEdit.js"></script>
+<script type="text/javascript">
+  bkLib.onDomLoaded(function() {
+
+  new nicEditor({iconsPath : "' . BEZ_HOST . 'js/nicEditorIcons.gif"}).panelInstance("area3");
+
+ });
+</script>';//для редактора
 //выведем форму
 echo '<div class="container-md col-sm-4">
 <form action="" method="POST">
@@ -85,7 +93,7 @@ echo '<div class="container-md col-sm-4">
 
   <div class="form-group">
   <label for="exampleFormControlTextarea1">Информация</label>
-  <textarea class="form-control" name="info" id="exampleFormControlTextarea1" rows="3">' . $row['day_info'] . '</textarea>
+  <textarea class="form-control" name="info" id="area3" rows="5">' . $row['day_info'] . '</textarea>
  </div>
 
  <div class="form-group form-check">
