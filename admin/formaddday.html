@@ -1,3 +1,14 @@
+<?PHP
+echo '<script type="text/javascript" src="' . BEZ_HOST . 'js/nicEdit.js"></script>
+<script type="text/javascript">
+  bkLib.onDomLoaded(function() {
+
+  new nicEditor({iconsPath : "' . BEZ_HOST . 'js/nicEditorIcons.gif"}).panelInstance("area3");
+
+ });
+</script>';//для редактора
+?>
+
 <div class="container-md col-sm-4">
 <form action="" method="POST">
   <div class="form-group">
@@ -21,7 +32,7 @@
 
   <div class="form-group">
   <label for="exampleFormControlTextarea1">Информация</label>
-  <textarea class="form-control" name="info" id="exampleFormControlTextarea1" rows="3"></textarea>
+  <textarea class="form-control" name="info" id="area3" rows="3"></textarea>
  </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>

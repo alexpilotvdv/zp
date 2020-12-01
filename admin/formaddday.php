@@ -1,4 +1,9 @@
 <?php
+//Ключ защиты
+if (!defined('BEZ_KEY')) {
+    header("HTTP/1.1 404 Not Found");
+    exit(file_get_contents('404.html'));
+}
 if(isset($_POST['mode'])){
 if($_POST['action']=='new'){
   $tp_info=mysql_real_escape_string($_POST['info']);
