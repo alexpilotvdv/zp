@@ -41,7 +41,6 @@ echo'<div class="card mb-3" style="max-width: 540px;">
     <p class="card-text">Планируемый налет: ' . $row['rec_plan_nalet'] . ' минут.</p>
     <p class="card-text">' . $row['rec_info'] . '</p>
     <p class="card-text">Фактический налет: <a href="?mode=changefact&id_rec=' . $row['rec_id'] . '&day=' . $row['rec_day'] . '">' . $row['rec_fact_nalet'] . '</a> минут.</p>
-    <p class="card-text">' . $row['rec_info'] . '</p>
     <p class="card-text"><small class="text-muted">Телефон: ' . $row['pr_other'] . '</small></p>
   </div>
 </div>

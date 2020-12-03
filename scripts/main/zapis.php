@@ -10,6 +10,12 @@ if ($user === false) {
 }
 
 if ($user === true) {
+  echo '<script type="text/javascript" src="' . BEZ_HOST . 'js/nicEdit.js"></script>
+<script type="text/javascript">
+  bkLib.onDomLoaded(function() {
+  new nicEditor({iconsPath : "' . BEZ_HOST . 'js/nicEditorIcons.gif"}).panelInstance("area3");
+ });
+</script>';//для редактора
     echo '<div class="container">';
     //выводим информацию по дню
     if (isset($_GET['idday'])) {
@@ -133,7 +139,7 @@ echo'<div class="card mb-3" style="max-width: 540px;">
         echo'<input type = "hidden" name = "id" value = "' . $row['rec_id'] . '">';
         echo'  <div class="form-group">
       <label>Информация</label>
-      <textarea class="form-control" name="info"
+      <textarea class="form-control" name="info" id="area3"
         rows="3">' . $row['rec_info'] . '</textarea>
       </div>';
     }
@@ -141,7 +147,7 @@ echo'<div class="card mb-3" style="max-width: 540px;">
         echo'<input type = "hidden" name = "action" value = "add_new">';
         echo'  <div class="form-group">
       <label>Информация</label>
-      <textarea class="form-control" name="info"  rows="3"></textarea>
+      <textarea class="form-control" name="info" id="area3" rows="3"></textarea>
       </div>';
     }
 
@@ -155,6 +161,7 @@ echo'<div class="card mb-3" style="max-width: 540px;">
     //обработаем данные формы и перезагрузим страницу
     if (isset($_POST['action'])) {
         if ($_POST['action']=='add_new' and $tp_flag==0) {
+          $tp_info=mysql_real_escape_string($_POST['info']);
             $sql='INSERT INTO
   `'. BEZ_DBPREFIX .'records`
   VALUES(
@@ -163,14 +170,15 @@ echo'<div class="card mb-3" style="max-width: 540px;">
     ' . $_GET['idday'] . ' ,
     ' . $_POST['minutes'] . ' ,
     0,
-    "' . $_POST['info'] . '")';
+    "' . $tp_info . '")';
             $res=mysqlQuery($sql);
             header('Location:'. BEZ_HOST .'?mode=zapis&idday=' . $day_id . '');
         } elseif ($_POST['action']=='edit_new') {
+          $tp_info=mysql_real_escape_string($_POST['info']);
             $sql='UPDATE
   `'. BEZ_DBPREFIX .'records` SET
   `rec_plan_nalet` = ' . $_POST['minutes'] . ' ,
-  `rec_info` = "' . $_POST['info'] . '"
+  `rec_info` = "' . $tp_info . '"
   WHERE `rec_id` = ' . $_POST['id'] . '';
             $res=mysqlQuery($sql);
             header('Location:'. BEZ_HOST .'?mode=zapis&idday=' . $day_id . '');
