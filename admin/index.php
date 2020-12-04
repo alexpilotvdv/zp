@@ -56,7 +56,9 @@
                 $user_admin=false;
             }
         }
-
+        if ($user_admin==false) {
+            header('Location:'. BEZ_HOST );
+          }
     switch ($mode) {
 
         case 'users':
